@@ -171,17 +171,18 @@ To ensure the security of the campus ecosystem, this application does not allow 
 
 ### 🎓 User Portal (Student Interface)
 1.  **Home (Menu)**: Browse the digital menu with advanced search and tag-based filtering. 
-    ![Home Menu](photo/menu_screen.png)
+    ![Home Menu](photo/menu.png)
 2.  **Cart**: Review items and manage quantities before placing an order.
-    ![Cart Screen](photo/cart_screen.png)
+    ![Cart Screen](photo/cart.png)
 3.  **Active Orders**: View real-time progress. The system tracks the order from "Pending" to "Ready".
-    ![Active Orders](photo/Order-Screen.png)
+    ![Active Orders](photo/order.png)
 4.  **Profile & Stats**:
     * **Activity History**: A detailed log of all orders and wallet transactions.
     * **User Stats**: Insights into total orders placed and total money spent.
-    ![Profile Stats](photo/profile_screen.png)
+    ![Profile Stats](photo/profile.png)
 5.  **Notifications**: Real-time alerts for order readiness or wallet balance changes, accessible via the navbar bell icon.
 6.  **Invite Page**: A dedicated screen for the "Collaborative Ordering" feature to facilitate group meals.
+    ![Invite Page](photo/invite.png)
 
 ---
 
@@ -190,6 +191,7 @@ To ensure the security of the campus ecosystem, this application does not allow 
 2.  **User Management**: 
     * **Directory**: Search and view the list of authorized students.
     * **Wallet Actions**: Manually **Add Funds** for cash recharges or apply a **Penalty** (Reduce Funds).
+    ![User Management](photo/admin-user.png)
 3.  **Order Management**: Centralized hub to manage the kitchen workflow by updating order statuses (e.g., mark as Cooking or Completed).
 
 ---
