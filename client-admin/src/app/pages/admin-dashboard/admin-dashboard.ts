@@ -50,6 +50,25 @@ export class AdminDashboard implements OnInit {
 
   // Filter state
   filterType = signal<'all' | 'dayscholar' | 'hosteller'>('all');
+  filterDept = signal<string>('all');
+  filterYear = signal<string>('all');
+
+  // Filter options
+  departments = [
+    'Aeronautical Engineering',
+    'Agriculture Engineering',
+    'Artificial Intelligence and Data Science',
+    'Biomedical Engineering',
+    'Biotechnology',
+    'Computer Science & Engineering',
+    'Computer Science and Engineering (AIML)',
+    'Computer Science and Business Systems',
+    'Electronics & Communication Engineering',
+    'Electrical & Electronics Engineering',
+    'VLSI',
+    'Mechanical Engineering'
+  ];
+  years = [1, 2, 3, 4];
 
   // Create User Modal state
   showCreateUserModal = signal<boolean>(false);
@@ -206,12 +225,25 @@ export class AdminDashboard implements OnInit {
   applyFilters(): void {
     const query = this.searchQuery().toLowerCase().trim();
     const type = this.filterType();
+    const dept = this.filterDept();
+    const year = this.filterYear();
 
     let filtered = this.users();
 
     // Apply type filter
     if (type !== 'all') {
       filtered = filtered.filter((user) => user.userType === type);
+    }
+
+    // Apply department filter
+    if (dept !== 'all') {
+      filtered = filtered.filter((user) => user.department === dept);
+    }
+
+    // Apply year filter
+    if (year !== 'all') {
+      const yearNum = parseInt(year);
+      filtered = filtered.filter((user) => user.year === yearNum);
     }
 
     // Apply search filter

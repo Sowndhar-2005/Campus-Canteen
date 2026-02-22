@@ -1,8 +1,8 @@
 <!-- Admin Login Background - Dark/Professional Theme -->
 <div class="min-vh-100 d-flex align-items-center justify-content-center bg-dark position-relative overflow-hidden">
-  
+
   <!-- Abstract Digital Pattern Background -->
-  <div class="position-absolute top-0 start-0 w-100 h-100" 
+  <div class="position-absolute top-0 start-0 w-100 h-100"
        style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); z-index: 0;">
   </div>
   <div class="position-absolute top-0 end-0 p-5 opacity-10" style="transform: translate(30%, -30%);">
@@ -22,7 +22,7 @@
     <div class="card-body p-4 px-sm-5 pb-5">
       <!-- Error Message -->
       @if (errorMessage()) {
-        <div class="alert alert-danger d-flex align-items-center gap-2 mb-4 py-2 small rounded-3 shadow-sm border-0 bg-danger text-white" role="alert">
+        <div class="alert alert-danger d-flex align-items-center gap-2 mb-4 py-2 small rounded-3 shadow-sm border-0 bg-danger text-white">
           <i class="bi bi-exclamation-triangle-fill"></i>
           {{ errorMessage() }}
         </div>
@@ -30,15 +30,15 @@
 
       <!-- Admin Login Form -->
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-4">
-        
+
         <div class="form-group">
           <label class="form-label small fw-bold text-secondary text-uppercase">Email Address</label>
           <div class="input-group">
             <span class="input-group-text bg-white border-end-0 text-secondary ps-3 rounded-start-3"><i class="bi bi-person-fill"></i></span>
-            <input 
-                type="email" 
-                class="form-control bg-white border-start-0 py-2.5 rounded-end-3" 
-                placeholder="admin@college.edu" 
+            <input
+                type="email"
+                class="form-control bg-white border-start-0 py-2.5 rounded-end-3"
+                placeholder="admin@college.edu"
                 formControlName="identifier">
           </div>
         </div>
@@ -47,10 +47,10 @@
           <label class="form-label small fw-bold text-secondary text-uppercase">Password</label>
           <div class="input-group">
              <span class="input-group-text bg-white border-end-0 text-secondary ps-3 rounded-start-3"><i class="bi bi-key-fill"></i></span>
-             <input 
-                [type]="showPassword() ? 'text' : 'password'" 
-                class="form-control bg-white border-start-0 border-end-0 py-2.5" 
-                placeholder="••••••••" 
+             <input
+                [type]="showPassword() ? 'text' : 'password'"
+                class="form-control bg-white border-start-0 border-end-0 py-2.5"
+                placeholder="••••••••"
                 formControlName="password">
              <button class="btn btn-white border border-start-0 text-secondary pe-3 rounded-end-3" type="button" (click)="togglePassword()">
                 <i class="bi" [class.bi-eye]="!showPassword()" [class.bi-eye-slash]="showPassword()"></i>
@@ -70,7 +70,7 @@
 
     </div>
   </div>
-  
+
   <div class="position-absolute bottom-0 w-100 text-center pb-3 text-white-50 small">
       &copy; 2024 Campus Canteen Admin System
   </div>

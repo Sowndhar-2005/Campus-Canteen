@@ -2,8 +2,10 @@
   <router-outlet></router-outlet>
 </main>
 
-<footer class="bg-light text-center py-3 mt-auto border-top">
-  <div class="container">
-    <small class="text-muted">© 2026 Campus Canteen. All rights reserved.</small>
-  </div>
-</footer>
+@if (!isInvitePage()) {
+  <footer class="bg-light text-center py-3 mt-auto border-top">
+    <div class="container">
+      <small class="text-muted">© 2026 Campus Canteen. All rights reserved.</small>
+    </div>
+  </footer>
+}

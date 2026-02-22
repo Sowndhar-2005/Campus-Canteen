@@ -10,6 +10,8 @@
     ],
     "scripts": {
         "install:all": "npm install && cd client-user && npm install && cd ../client-admin && npm install && cd ../server && npm install",
+        "start-all": "npm run install:all && npm run dev",
+        "kill-ports": ".\\kill-ports.bat",
         "dev": "concurrently \"npm run dev:server\" \"npm run dev:user\" \"npm run dev:admin\"",
         "dev:server": "cd server && npm run dev",
         "dev:user": "cd client-user && npm start",

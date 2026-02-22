@@ -29,24 +29,14 @@
             }
           </a>
         </li>
-        <!-- <li class="nav-item">
+        <li class="nav-item">
           <a class="nav-link" routerLink="/invite" routerLinkActive="active text-primary">Invite</a>
-        </li> -->
+        </li>
       </ul>
 
       <div class="d-flex align-items-center gap-3">
-        <!-- Wallet Balance (Visible everywhere except Profile page) -->
-        <!-- @if (userService.currentUser() && !router.url.includes('/profile')) {
-          <div class="d-none d-md-flex flex-column align-items-end me-2">
-            <small class="text-muted" style="font-size: 0.75rem;">Balance</small>
-            <span class="fw-bold text-success">
-              {{ userService.walletBalance() | currency:'INR' }}
-            </span>
-          </div>
-        } -->
-
         <!-- Cart Button -->
-        <a routerLink="/cart" class="btn btn-light position-relative rounded-3 d-flex align-items-center gap-2 text-decoration-none" [attr.aria-label]="'Shopping cart with ' + cartItemCount() + ' items'">
+        <a routerLink="/cart" class="btn btn-light position-relative rounded-3 d-flex align-items-center gap-2 text-decoration-none">
           <i class="bi bi-cart3 fs-5"></i>
           <span class="d-none d-sm-inline fw-bold small text-dark">Cart</span>
           @if (cartItemCount() > 0) {
@@ -68,11 +58,10 @@
 
           <!-- Notification Bell -->
           <div class="position-relative ms-1">
-            <button 
-              class="btn btn-light rounded-circle p-0 d-flex align-items-center justify-content-center position-relative" 
+            <button
+              class="btn btn-light rounded-circle p-0 d-flex align-items-center justify-content-center position-relative"
               style="width: 40px; height: 40px;"
               (click)="toggleNotifications()"
-              [attr.aria-label]="'Notifications with ' + unreadCount() + ' unread'"
             >
               <i class="bi bi-bell-fill fs-5 text-primary"></i>
               @if (unreadCount() > 0) {
@@ -84,15 +73,15 @@
 
             <!-- Notifications Dropdown -->
             @if (showNotifications()) {
-              <div class="position-absolute end-0 mt-2 bg-white rounded-3 shadow-lg border p-0 overflow-hidden" 
+              <div class="position-absolute end-0 mt-2 bg-white rounded-3 shadow-lg border p-0 overflow-hidden"
                    style="width: 320px; max-height: 400px; z-index: 1050; display: flex; flex-direction: column;">
-                
+
                 <!-- Header -->
                 <div class="d-flex justify-content-between align-items-center p-2 border-bottom bg-light">
                   <span class="fw-bold small mb-0 px-2">Notifications</span>
                   <button class="btn-close btn-sm" (click)="showNotifications.set(false)" style="font-size: 0.6rem;"></button>
                 </div>
-                
+
                 <!-- List -->
                 <div class="overflow-auto" style="max-height: 350px;">
                   @if (notifications().length === 0) {
@@ -121,9 +110,9 @@
                               {{ notification.createdAt | date:'shortTime' }}
                             </small>
                           </div>
-                          <button 
-                            class="btn btn-sm p-0 opacity-50" 
-                            (click)="dismissNotification($index)" 
+                          <button
+                            class="btn btn-sm p-0 opacity-50"
+                            (click)="dismissNotification($index)"
                           >
                             <i class="bi bi-x small"></i>
                           </button>

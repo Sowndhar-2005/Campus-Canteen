@@ -12,6 +12,7 @@ import foodRoutes from './routes/food';
 import cartRoutes from './routes/cart';
 import orderRoutes from './routes/order';
 import adminRoutes from './routes/admin';
+import profileChangeRoutes from './routes/profileChanges';
 
 // Load environment variables
 dotenv.config();
@@ -40,6 +41,7 @@ app.use('/api/food', foodRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/profile-changes', profileChangeRoutes);
 
 // 404 handler
 app.use((req, res) => {

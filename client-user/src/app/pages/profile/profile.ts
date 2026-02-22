@@ -60,10 +60,12 @@ export class Profile {
     year: 1
   });
 
-  // Change request form (for email and registration number)
+  // Change request form (for email, registration number, and user type)
   changeRequestForm = signal({
     email: '',
-    registrationNumber: ''
+    registrationNumber: '',
+    userType: '',
+    name: ''
   });
 
   isSubmittingRequest = signal(false);
@@ -112,7 +114,7 @@ export class Profile {
     });
   }
 
-  updateChangeRequestField(field: 'email' | 'registrationNumber', event: any) {
+  updateChangeRequestField(field: 'email' | 'registrationNumber' | 'userType' | 'name', event: any) {
     const value = event.target.value;
     const currentForm = this.changeRequestForm();
     this.changeRequestForm.set({
@@ -121,7 +123,7 @@ export class Profile {
     });
   }
 
-  submitChangeRequest(type: 'email' | 'registrationNumber') {
+  submitChangeRequest(type: 'email' | 'registrationNumber' | 'userType' | 'name') {
     this.isSubmittingRequest.set(true);
     const requestedValue = this.changeRequestForm()[type];
 

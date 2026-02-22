@@ -1,8 +1,13 @@
-.no-scrollbar::-webkit-scrollbar {
-    display: none;
-}
-
 .no-scrollbar {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
+}
+
+.custom-alert-info {
+    background-color: #e7f3ff;
+}
+
+.custom-toast-container {
+    z-index: 9999;
+    margin-top: 70px;
 }

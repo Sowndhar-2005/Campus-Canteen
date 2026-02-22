@@ -145,8 +145,8 @@ export class UserService {
     return this.http.put<any>('/api/auth/profile', data);
   }
 
-  // Submit profile change request (for email and registration number)
-  submitProfileChangeRequest(requestType: 'email' | 'registrationNumber', requestedValue: string) {
+  // Submit profile change request (for email, registration number, name, and user type)
+  submitProfileChangeRequest(requestType: 'email' | 'registrationNumber' | 'userType' | 'name', requestedValue: string) {
     return this.http.post<any>('/api/profile-changes/submit', {
       requestType,
       requestedValue

@@ -1,302 +1,306 @@
 <app-top-navbar></app-top-navbar>
 
-<div class="container-fluid px-3 py-2 d-flex flex-column" style="height: calc(100vh - 88px); overflow: hidden;">
-  <!-- Compact Header -->
-   <div class="d-flex justify-content-between align-items-center mb-2 flex-shrink-0">
-    <h1 class="h4 fw-bold mb-0">Orders</h1>
+<div class="orders-page">
+  <!-- Page Header -->
+  <div class="orders-header">
+    <h1>Orders</h1>
   </div>
 
-  <!-- Scrollable Content Area -->
-  <div class="flex-grow-1 overflow-y-auto pb-4 pe-2">
-      <!-- Main Content Grid - Compact -->
-      <div class="row g-3 mb-3">
-        <!-- Left: Selected Order Item - Dynamic -->
-        <div class="col-lg-7">
-          @if (orderService.selectedOrderItem(); as selected) {
-            <div class="card border-0 shadow-sm rounded-3">
-              <div class="card-body p-3">
-                <!-- Smaller Food Image - Fixed Height -->
-                <div class="rounded-3 mb-3 overflow-hidden" style="height: 422px;">
-                  <div class="w-100 h-100" [style.background-image]="'url(' + selected.food.image + ')'" style="background-size: cover; background-position: center;"></div>
-                </div>
+  <!-- Main Content Grid -->
+  <div class="orders-grid">
+    <!-- Left: Selected Item Preview -->
+    <div class="order-card preview-card">
+      @if (orderService.selectedOrderItem(); as selected) {
+        <!-- Food Image -->
+        <div class="preview-image-wrapper">
+          <div class="preview-image" [style.background-image]="'url(' + selected.food.image + ')'"></div>
+        </div>
 
-                <!-- Order Info -->
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                  <div>
-                    <h3 class="h6 fw-bold mb-0">{{ selected.food.name }}</h3>
-                  </div>
-                  
-                  <!-- Quantity Controls -->
-                  <div class="btn-group btn-group-sm shadow-sm">
-                    <button (click)="updateSelectedQuantity(-1)" class="btn btn-light border">
-                      <i class="bi bi-dash"></i>
-                    </button>
-                    <span class="btn btn-light border-top border-bottom disabled fw-bold">{{ selected.quantity }}</span>
-                    <button (click)="updateSelectedQuantity(1)" class="btn btn-light border">
-                      <i class="bi bi-plus"></i>
-                    </button>
-                  </div>
-                </div>
+        <!-- Item Details -->
+        <div class="d-flex justify-content-between align-items-start mb-1">
+          <div>
+            <h3 class="item-name">{{ selected.food.name }}</h3>
+            @if (selected.food.description) {
+              <p class="food-description">{{ selected.food.description }}</p>
+            }
+          </div>
 
-                <!-- Price Info -->
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span class="text-muted small">Price per item:</span>
-                  <span class="fw-bold">₹{{ selected.food.price }}</span>
-                </div>
-                <div class="d-flex justify-content-between align-items-center mb-3 border-top pt-2">
-                  <span class="fw-bold">Total:</span>
-                  <span class="h6 fw-bold text-primary mb-0">₹{{ selected.food.price * selected.quantity }}</span>
-                </div>
-
-                    </div>
-                  </div>
-                } @else {
-                  <div class="card border-0 shadow-sm rounded-3">
-                    <div class="card-body p-5 text-center text-muted">
-                      <i class="bi bi-inbox fs-1 mb-3 d-block"></i>
-                      <p class="mb-0">No items selected. Add items from menu!</p>
-                    </div>
-                  </div>
-                }
-              </div>
-          
-              <!-- Right: Food List - Compact -->
-              <div class="col-lg-5">
-                <div class="card border-0 shadow-sm rounded-3">
-                  <div class="card-body p-3">
-                    <!-- Header (Editable Title) -->
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                       <div class="flex-grow-1 me-2">
-                           <input 
-                              type="text" 
-                              [ngModel]="listTitle()" 
-                              (ngModelChange)="listTitle.set($event)" 
-                              class="form-control form-control-sm fw-bold border-0 bg-light" 
-                              placeholder="Ordering for..."
-                              style="font-size: 1rem;">
-                       </div>
-                      <div class="d-flex gap-2">
-                          <button (click)="toggleGrouping()" class="btn btn-light rounded-circle p-0 shadow-sm d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" [title]="isGrouped() ? 'Show Flat List' : 'Group by Category'">
-                            <i class="bi" [class.bi-list-ul]="isGrouped()" [class.bi-grid]="!isGrouped()"></i>
-                          </button>
-                          <button (click)="navigateToMenu()" class="btn btn-primary rounded-circle p-0 shadow-sm d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" title="Add more items">
-                            <i class="bi bi-plus-lg"></i>
-                          </button>
-                      </div>
-                    </div>
-          
-                    <!-- Food Items - Dynamic List with Increased Height -->
-                    <div class="mb-3" style="max-height: 400px; overflow-y: auto;">
-                      @if (isGrouped()) {
-                          @for (group of orderGroups(); track group.name) {
-                              <div class="mb-3">
-                                  <div class="d-flex justify-content-between align-items-center bg-light px-3 py-1 rounded-2 mb-2 sticky-top" style="z-index: 1;">
-                                      <h6 class="text-primary small fw-bold mb-0">{{ group.name }}</h6>
-                                      <span class="badge bg-white text-dark border small">₹{{ group.total }}</span>
-                                  </div>
-                                  
-                                  @for (item of group.items; track item.food._id) {
-                                      <div 
-                                          (click)="selectItem(item)"
-                                          [class.bg-primary-subtle]="orderService.selectedOrderItem() && orderService.selectedOrderItem()!.food._id === item.food._id"
-                                          class="d-flex align-items-center gap-2 p-2 rounded-2 mb-1 hover-bg-light" 
-                                          style="cursor: pointer;">
-                                          <div class="rounded-2 overflow-hidden flex-shrink-0" style="width: 45px; height: 45px; background-size: cover; background-position: center;" [style.background-image]="'url(' + item.food.image + ')'"></div>
-                                          <div class="flex-grow-1 overflow-hidden">
-                                              <p class="fw-bold mb-0 text-truncate" style="font-size: 0.85rem;">{{ item.food.name }}</p>
-                                              <p class="text-muted mb-0" style="font-size: 0.7rem;">x{{ item.quantity }}</p>
-                                          </div>
-                                          <span class="fw-bold text-dark small text-nowrap">₹{{ item.food.price * item.quantity }}</span>
-                                          
-                                          <div class="d-flex gap-1 flex-shrink-0">
-                                              <button 
-                                              (click)="addToCart(item); $event.stopPropagation()"
-                                              class="btn btn-sm btn-light text-primary rounded-circle p-0 shadow-sm d-flex align-items-center justify-content-center"
-                                              style="width: 28px; height: 28px;"
-                                              title="Add to Cart">
-                                                  <i class="bi bi-cart-plus-fill" style="font-size: 0.85rem;"></i>
-                                              </button>
-                                              <button 
-                                              (click)="removeItem(item.food._id, $event)" 
-                                              class="btn btn-sm btn-danger rounded-circle p-0 shadow-sm d-flex align-items-center justify-content-center"
-                                              style="width: 28px; height: 28px;"
-                                              title="Remove item">
-                                              <i class="bi bi-trash3-fill" style="font-size: 0.75rem;"></i>
-                                              </button>
-                                          </div>
-                                      </div>
-                                  }
-                              </div>
-                          }
-                      } @else {
-                          @for (item of orderService.orderItems(); track item.food._id) {
-                          <div 
-                              (click)="selectItem(item)"
-                              [class.bg-primary-subtle]="orderService.selectedOrderItem() && orderService.selectedOrderItem()!.food._id === item.food._id"
-                              class="d-flex align-items-center gap-2 p-2 rounded-2 mb-1 hover-bg-light" 
-                              style="cursor: pointer;">
-                              <div class="rounded-2 overflow-hidden flex-shrink-0" style="width: 45px; height: 45px; background-size: cover; background-position: center;" [style.background-image]="'url(' + item.food.image + ')'"></div>
-                              <div class="flex-grow-1 overflow-hidden">
-                                  <p class="fw-bold mb-0 text-truncate" style="font-size: 0.85rem;">{{ item.food.name }}</p>
-                                  <p class="text-muted mb-0" style="font-size: 0.7rem;">x{{ item.quantity }}</p>
-                              </div>
-                              <span class="fw-bold text-dark small text-nowrap">₹{{ item.food.price * item.quantity }}</span>
-                              
-                              <div class="d-flex gap-1 flex-shrink-0">
-                                  <button 
-                                  (click)="addToCart(item); $event.stopPropagation()"
-                                  class="btn btn-sm btn-light text-primary rounded-circle p-0 shadow-sm d-flex align-items-center justify-content-center"
-                                  style="width: 28px; height: 28px;"
-                                  title="Add to Cart">
-                                      <i class="bi bi-cart-plus-fill" style="font-size: 0.85rem;"></i>
-                                  </button>
-                                  <button 
-                                  (click)="removeItem(item.food._id, $event)" 
-                                  class="btn btn-sm btn-danger rounded-circle p-0 shadow-sm d-flex align-items-center justify-content-center"
-                                  style="width: 28px; height: 28px;"
-                                  title="Remove item">
-                                      <i class="bi bi-trash3-fill" style="font-size: 0.75rem;"></i>
-                                  </button>
-                              </div>
-                          </div>
-                          }
-                      }
-          
-                      @if (orderService.orderItems().length === 0) {
-                        <div class="text-center text-muted py-3">
-                          <i class="bi bi-cart-x fs-4 mb-2 d-block"></i>
-                          <p class="small mb-0">No items yet</p>
-                        </div>
-                      }
-                    </div>
-          
-                    <!-- Summary - Dynamic Totals -->
-                    <div class="border-top pt-2">
-                      <div class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="fw-bold">Total</span>
-                        <span class="fw-bold text-primary h6 mb-0">₹{{ orderService.getSubtotal() }}</span>
-                      </div>
-                <div class="d-grid gap-2 d-md-flex">
-                  <button 
-                    (click)="addListToCart()"
-                    [disabled]="orderService.orderItems().length === 0"
-                    class="btn btn-success flex-grow-1 py-2 rounded-3 fw-bold shadow-sm d-flex justify-content-center align-items-center gap-2">
-                    <i class="bi bi-cart-plus-fill"></i>
-                    Add Group
-                  </button>
-                  <button 
-                    (click)="payOrder()"
-                    [disabled]="orderService.orderItems().length === 0"
-                    class="btn btn-primary flex-grow-1 py-2 rounded-3 fw-bold shadow-sm d-flex justify-content-center align-items-center gap-2">
-                    <i class="bi bi-credit-card-fill"></i>
-                    Pay Order
-                  </button>
-                </div>
-              </div>
-            </div>
+          <!-- Quantity Stepper -->
+          <div class="qty-stepper">
+            <button (click)="updateSelectedQuantity(-1)" aria-label="Decrease quantity">
+              <i class="bi bi-dash"></i>
+            </button>
+            <span class="qty-value">{{ selected.quantity }}</span>
+            <button (click)="updateSelectedQuantity(1)" aria-label="Increase quantity">
+              <i class="bi bi-plus"></i>
+            </button>
           </div>
         </div>
-            </div>
 
-      <!-- Suggested Items Section -->
-      @if (suggestedFoods().length > 0) {
-        <div class="mb-4">
-            <!-- Header with Gemini Icon & Navigation -->
-            <div class="d-flex justify-content-between align-items-center mb-3 px-1">
-                <div class="d-flex align-items-center gap-2">
-                    <h6 class="fw-bold mb-0">{{ suggestedTitle() }}</h6>
-                    <!-- Gemini/AI Sparkle Icon -->
-                     <i class="bi bi-stars text-warning fs-5" title="Suggested by Gemini AI"></i>
-                </div>
-                
-                <!-- Navigation Buttons -->
-                <div class="d-flex gap-2">
-                    <button (click)="scrollSuggestions('left')" class="btn btn-sm btn-light rounded-circle shadow-sm border d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
-                        <i class="bi bi-chevron-left"></i>
-                    </button>
-                    <button (click)="scrollSuggestions('right')" class="btn btn-sm btn-light rounded-circle shadow-sm border d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
-                        <i class="bi bi-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Scrollable List -->
-            <div #suggestionsContainer class="d-flex gap-3 overflow-x-auto pb-2 px-1" style="scroll-behavior: smooth;">
-                @for (food of suggestedFoods(); track food._id) {
-                    <div class="card border-0 shadow-sm flex-shrink-0" style="width: 220px;">
-                        <div class="card-body p-2">
-                            <div class="rounded-3 mb-2 position-relative overflow-hidden" style="height: 120px;">
-                                <div class="w-100 h-100" [style.background-image]="'url(' + food.image + ')'" style="background-size: cover; background-position: center;"></div>
-                            </div>
-                            <h6 class="fw-bold mb-1 text-truncate" [title]="food.name">{{ food.name }}</h6>
-                            <div class="d-flex justify-content-between align-items-center mt-2">
-                                <span class="fw-bold text-primary">₹{{ food.price }}</span>
-                                <button (click)="addSuggestion(food)" class="btn btn-sm btn-outline-primary rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" title="Add to Order">
-                                    <i class="bi bi-plus-lg"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
+        <!-- Price Breakdown -->
+        <div class="price-row">
+          <span class="price-label">Price per item:</span>
+          <span class="price-value">₹{{ selected.food.price }}</span>
+        </div>
+        <div class="price-row total-row">
+          <span class="price-label">Total:</span>
+          <span class="price-value">₹{{ selected.food.price * selected.quantity }}</span>
+        </div>
+      } @else {
+        <div class="empty-preview">
+          <i class="bi bi-inbox empty-icon"></i>
+          <p>No items selected. Add items from the menu!</p>
         </div>
       }
     </div>
-</div>
-      <!-- </div> -->
 
-<style>
-.hover-bg-light:hover {
-  background-color: #f8f9fa;
-}
-</style>
-
-<!-- Payment Selection Modal -->
-@if (showPaymentModal) {
-<div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
-      <div class="modal-header bg-light border-bottom px-4 py-3">
-        <h5 class="modal-title fw-bold">Select Payment Method</h5>
-        <button type="button" class="btn-close" (click)="closePaymentModal()"></button>
-      </div>
-      <div class="modal-body p-4">
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <span class="text-muted">Total Amount</span>
-            <span class="h3 fw-bold text-primary mb-0">₹{{ orderService.getSubtotal() }}</span>
+    <!-- Right: Order Items List -->
+    <div class="order-card list-card">
+      <!-- List Header -->
+      <div class="list-header">
+        <input
+          type="text"
+          [ngModel]="listTitle()"
+          (ngModelChange)="listTitle.set($event)"
+          class="list-title-input"
+          placeholder="My Order"
+          aria-label="Order title">
+        <div class="list-header-actions">
+          <button
+            (click)="toggleGrouping()"
+            class="icon-btn"
+            [title]="isGrouped() ? 'Show Flat List' : 'Group by Category'"
+            [attr.aria-label]="isGrouped() ? 'Show flat list' : 'Group by category'">
+            <i class="bi" [class.bi-list-ul]="isGrouped()" [class.bi-grid]="!isGrouped()"></i>
+          </button>
+          <button
+            (click)="navigateToMenu()"
+            class="icon-btn primary"
+            title="Add more items"
+            aria-label="Add more items from menu">
+            <i class="bi bi-plus-lg"></i>
+          </button>
         </div>
+      </div>
 
-        <div class="d-grid gap-3">
-            <!-- Wallet Option -->
-            <button class="btn btn-outline-primary py-3 rounded-3 d-flex justify-content-between align-items-center px-4" 
-                    [class.disabled]="userService.walletBalance() < orderService.getSubtotal()"
-                    (click)="processPayment('WALLET')">
-                <div class="d-flex align-items-center gap-3">
-                    <i class="bi bi-wallet2 fs-4"></i>
-                    <div class="text-start">
-                        <div class="fw-bold">Pay with Wallet</div>
-                        <small class="text-muted">Balance: ₹{{ userService.walletBalance() }}</small>
-                    </div>
-                </div>
-                @if (userService.walletBalance() < orderService.getSubtotal()) {
-                    <span class="badge bg-danger">Low Balance</span>
-                }
-            </button>
+      <!-- Food Items List -->
+      <div class="food-list">
+        @if (isGrouped()) {
+          @for (group of orderGroups(); track group.name) {
+            <div class="mb-2">
+              <div class="group-header">
+                <h6>{{ group.name }}</h6>
+                <span class="group-total-badge">₹{{ group.total }}</span>
+              </div>
 
-            <!-- UPI Option -->
-            <button class="btn btn-outline-success py-3 rounded-3 d-flex justify-content-between align-items-center px-4" (click)="processPayment('UPI')">
-                <div class="d-flex align-items-center gap-3">
-                    <i class="bi bi-upi fs-4"></i>
-                    <div class="text-start">
-                        <div class="fw-bold">Pay via UPI</div>
-                        <small class="text-muted">Google Pay / PhonePe / Paytm</small>
-                    </div>
+              @for (item of group.items; track item.food._id) {
+                <div
+                  (click)="selectItem(item)"
+                  class="food-item"
+                  [class.active]="orderService.selectedOrderItem() && orderService.selectedOrderItem()!.food._id === item.food._id"
+                  role="button"
+                  tabindex="0"
+                  (keydown.enter)="selectItem(item)"
+                  [attr.aria-label]="item.food.name + ', quantity ' + item.quantity + ', price ' + (item.food.price * item.quantity)">
+                  <div class="food-thumb" [style.background-image]="'url(' + item.food.image + ')'"></div>
+                  <div class="food-info">
+                    <p class="food-name">{{ item.food.name }}</p>
+                    <p class="food-qty">x{{ item.quantity }}</p>
+                  </div>
+                  <span class="food-price">₹{{ item.food.price * item.quantity }}</span>
+                  <div class="item-actions">
+                    <button
+                      (click)="addToCart(item); $event.stopPropagation()"
+                      class="action-btn cart-btn"
+                      title="Add to Cart"
+                      aria-label="Add to cart">
+                      <i class="bi bi-cart-plus-fill"></i>
+                    </button>
+                    <button
+                      (click)="removeItem(item.food._id, $event)"
+                      class="action-btn remove-btn"
+                      title="Remove item"
+                      aria-label="Remove item">
+                      <i class="bi bi-trash3-fill"></i>
+                    </button>
+                  </div>
                 </div>
-                <i class="bi bi-chevron-right"></i>
-            </button>
+              }
+            </div>
+          }
+        } @else {
+          @for (item of orderService.orderItems(); track item.food._id) {
+            <div
+              (click)="selectItem(item)"
+              class="food-item"
+              [class.active]="orderService.selectedOrderItem() && orderService.selectedOrderItem()!.food._id === item.food._id"
+              role="button"
+              tabindex="0"
+              (keydown.enter)="selectItem(item)"
+              [attr.aria-label]="item.food.name + ', quantity ' + item.quantity + ', price ' + (item.food.price * item.quantity)">
+              <div class="food-thumb" [style.background-image]="'url(' + item.food.image + ')'"></div>
+              <div class="food-info">
+                <p class="food-name">{{ item.food.name }}</p>
+                <p class="food-qty">x{{ item.quantity }}</p>
+              </div>
+              <span class="food-price">₹{{ item.food.price * item.quantity }}</span>
+              <div class="item-actions">
+                <button
+                  (click)="addToCart(item); $event.stopPropagation()"
+                  class="action-btn cart-btn"
+                  title="Add to Cart"
+                  aria-label="Add to cart">
+                  <i class="bi bi-cart-plus-fill"></i>
+                </button>
+                <button
+                  (click)="removeItem(item.food._id, $event)"
+                  class="action-btn remove-btn"
+                  title="Remove item"
+                  aria-label="Remove item">
+                  <i class="bi bi-trash3-fill"></i>
+                </button>
+              </div>
+            </div>
+          }
+        }
+
+        @if (orderService.orderItems().length === 0) {
+          <div class="empty-list">
+            <i class="bi bi-cart-x empty-list-icon d-block"></i>
+            <p>No items yet. Browse the menu to get started!</p>
+          </div>
+        }
+      </div>
+
+      <!-- Total & Buttons -->
+      <div class="list-footer">
+        <div class="total-row-list">
+          <span class="total-label">Total</span>
+          <span class="total-value">₹{{ orderService.getSubtotal() }}</span>
+        </div>
+        <div class="action-buttons">
+          <button
+            (click)="addListToCart()"
+            [disabled]="orderService.orderItems().length === 0"
+            class="btn-action btn-group-action">
+            <i class="bi bi-cart-plus-fill"></i>
+            Add Group
+          </button>
+          <button
+            (click)="payOrder()"
+            [disabled]="orderService.orderItems().length === 0"
+            class="btn-action btn-pay-action">
+            <i class="bi bi-credit-card-fill"></i>
+            Pay Order
+          </button>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Suggested Items Section -->
+  @if (suggestedFoods().length > 0) {
+    <div class="suggestions-section">
+      <div class="suggestions-header">
+        <div class="suggestions-title">
+          <h6>{{ suggestedTitle() }}</h6>
+          <i class="bi bi-stars sparkle-icon" title="Suggested by AI"></i>
+        </div>
+        <div class="nav-arrows">
+          <button
+            (click)="scrollSuggestions('left')"
+            class="nav-arrow"
+            aria-label="Scroll suggestions left">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          <button
+            (click)="scrollSuggestions('right')"
+            class="nav-arrow"
+            aria-label="Scroll suggestions right">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <div #suggestionsContainer class="suggestions-scroll">
+        @for (food of suggestedFoods(); track food._id) {
+          <div class="suggestion-card">
+            <div class="suggestion-image-wrapper">
+              <div class="suggestion-image" [style.background-image]="'url(' + food.image + ')'"></div>
+              @if (food.category) {
+                <span class="suggestion-badge">{{ food.category }}</span>
+              }
+            </div>
+            <div class="suggestion-body">
+              <p class="suggestion-name" [title]="food.name">{{ food.name }}</p>
+              <div class="suggestion-footer">
+                <span class="suggestion-price">₹{{ food.price }}</span>
+                <button
+                  (click)="addSuggestion(food)"
+                  class="suggestion-add-btn"
+                  [attr.aria-label]="'Add ' + food.name + ' to order'">
+                  <i class="bi bi-plus"></i> Order
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
 </div>
+
+<!-- Payment Selection Modal -->
+@if (showPaymentModal) {
+  <div class="modal-backdrop-custom" (click)="closePaymentModal()" role="dialog" aria-modal="true" aria-label="Payment method selection">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header-custom">
+        <h5>Select Payment Method</h5>
+        <button class="close-btn" (click)="closePaymentModal()" aria-label="Close payment modal">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="modal-body-custom">
+        <div class="modal-total-row">
+          <span>Total Amount</span>
+          <span class="modal-total-value">₹{{ orderService.getSubtotal() }}</span>
+        </div>
+
+        <div class="payment-options">
+          <!-- Wallet -->
+          <button
+            class="payment-option"
+            [class.disabled]="userService.walletBalance() < orderService.getSubtotal()"
+            (click)="processPayment('WALLET')"
+            [attr.aria-label]="'Pay with wallet, balance ' + userService.walletBalance()">
+            <div class="payment-option-left">
+              <i class="bi bi-wallet2 payment-icon"></i>
+              <div class="payment-option-info">
+                <div class="payment-method-name">Pay with Wallet</div>
+                <div class="payment-method-desc">Balance: ₹{{ userService.walletBalance() }}</div>
+              </div>
+            </div>
+            @if (userService.walletBalance() < orderService.getSubtotal()) {
+              <span class="low-balance-badge">Low Balance</span>
+            }
+          </button>
+
+          <!-- UPI -->
+          <button
+            class="payment-option"
+            (click)="processPayment('UPI')"
+            aria-label="Pay via UPI">
+            <div class="payment-option-left">
+              <i class="bi bi-phone payment-icon"></i>
+              <div class="payment-option-info">
+                <div class="payment-method-name">Pay via UPI</div>
+                <div class="payment-method-desc">Google Pay / PhonePe / Paytm</div>
+              </div>
+            </div>
+            <i class="bi bi-chevron-right" style="color: #9ca3af;"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 }

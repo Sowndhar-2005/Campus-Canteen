@@ -2,7 +2,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IProfileChangeRequest extends Document {
     userId: mongoose.Types.ObjectId;
-    requestType: 'email' | 'registrationNumber';
+    requestType: 'email' | 'registrationNumber' | 'userType' | 'name';
     currentValue: string;
     requestedValue: string;
     status: 'pending' | 'approved' | 'rejected';
@@ -21,7 +21,7 @@ const profileChangeRequestSchema = new Schema<IProfileChangeRequest>(
         },
         requestType: {
             type: String,
-            enum: ['email', 'registrationNumber'],
+            enum: ['email', 'registrationNumber', 'userType'],
             required: true,
         },
         currentValue: {

@@ -5,11 +5,12 @@ import mongoose from 'mongoose';
  * Hostellers have 'H' in registration number or 'hostel' in email.
  */
 export const detectUserType = (email: string, registrationNumber: string): 'dayscholar' | 'hosteller' => {
-    // Normalize inputs
-    const normalizedRegNo = registrationNumber ? registrationNumber.toUpperCase() : '';
     const normalizedEmail = email ? email.toLowerCase() : '';
 
-    if (normalizedRegNo.includes('H') || normalizedEmail.includes('hostel')) {
+    // Only check email for hostel indicator — reg number check removed
+    // because dept codes like MECH contain 'H' causing false positives.
+    // UserType should be explicitly set during registration/seeding.
+    if (normalizedEmail.includes('hostel')) {
         return 'hosteller';
     }
     return 'dayscholar';

@@ -10,31 +10,40 @@ const generateToken = (userId: string): string => {
     return jwt.sign({ userId }, JWT_SECRET, { expiresIn: '30d' } as jwt.SignOptions);
 };
 
-// Login (Strict - No Auto-Register)
+// Login (Email/Name and RegistrationNumber)
 export const login = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { email, registrationNumber } = req.body;
+        const { identifier, registrationNumber } = req.body;
 
-        if (!email || !registrationNumber) {
-            res.status(400).json({ error: 'Please provide Email and Registration Number' });
+        if (!identifier || !registrationNumber) {
+            res.status(400).json({ error: 'Please provide Email/Name and Registration Number' });
             return;
         }
 
-        const cleanEmail = email.toLowerCase().trim();
+        const cleanIdentifier = identifier.trim();
         const cleanRegNo = registrationNumber.toUpperCase().trim();
 
-        // 1. Check if user exists
-        const user = await User.findOne({ email: cleanEmail }).select('+password');
+        // 1. Find user by Registration Number (Primary unique identifier)
+        const user = await User.findOne({ registrationNumber: cleanRegNo }).select('+password');
 
         if (!user) {
-            // Strict Mode: User must exist
-            res.status(401).json({ error: 'User not found. Please contact admin to register.' });
+            res.status(401).json({ error: 'Invalid credentials. Please check your details.' });
             return;
         }
 
-        // 2. Validate Registration Number
-        if (user.registrationNumber !== cleanRegNo) {
-            res.status(401).json({ error: 'Invalid Registration Number for this Email' });
+        // 2. Validate Identifier (Must match either Email or Name)
+        const matchesEmail = user.email.toLowerCase() === cleanIdentifier.toLowerCase();
+        const matchesName = user.name.toLowerCase().trim() === cleanIdentifier.toLowerCase();
+
+        if (!matchesEmail && !matchesName) {
+            res.status(401).json({ error: 'Invalid credentials. Please check your details.' });
+            return;
+        }
+
+        // 3. Validate Password (Registration Number is used as password for student accounts)
+        const isMatch = await user.comparePassword(cleanRegNo);
+        if (!isMatch) {
+            res.status(401).json({ error: 'Invalid credentials. Please check your details.' });
             return;
         }
 

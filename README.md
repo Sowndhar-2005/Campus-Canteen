@@ -26,12 +26,10 @@
 
 This project leverages the **MEAN Stack** (MongoDB, Express, Angular, Node.js) fully written in **TypeScript** to ensure end-to-end type safety and maintainability.
 
-This project leverages the **MEAN Stack** fully written in **TypeScript** to ensure end-to-end type safety.
-
 ### Frontend (UI & UX)
 * **Angular v17+**: Utilizes **Signals** for reactive state management and **Standalone Components** for high performance.
 * **Architecture**: Component-based UI logic with dedicated services for Auth, Cart, and Orders.
-* **Styling**: A combination of Bootstrap’s utility classes and custom component-scoped CSS to ensure a polished user experience..
+* **Styling**: A combination of Bootstrap’s utility classes and custom component-scoped CSS to ensure a polished user experience.
 
 ### Backend (Logic & API)
 * **Node.js & Express**: RESTful API built with an MVC pattern for clear separation of concerns.
@@ -40,7 +38,6 @@ This project leverages the **MEAN Stack** fully written in **TypeScript** to ens
 
 ---
 
----
 ## 🚀 Quick Start (One-Command Run)
 
 We have simplified the ecosystem setup. You can install all dependencies and start the entire stack (Server + User Portal + Admin Portal) with a single command.
@@ -174,11 +171,15 @@ To ensure the security of the campus ecosystem, this application does not allow 
 
 ### 🎓 User Portal (Student Interface)
 1.  **Home (Menu)**: Browse the digital menu with advanced search and tag-based filtering. 
+    ![Home Menu](photo/menu_screen.png)
 2.  **Cart**: Review items and manage quantities before placing an order.
+    ![Cart Screen](photo/cart_screen.png)
 3.  **Active Orders**: View real-time progress. The system tracks the order from "Pending" to "Ready".
+    ![Active Orders](photo/Order-Screen.png)
 4.  **Profile & Stats**:
     * **Activity History**: A detailed log of all orders and wallet transactions.
     * **User Stats**: Insights into total orders placed and total money spent.
+    ![Profile Stats](photo/profile_screen.png)
 5.  **Notifications**: Real-time alerts for order readiness or wallet balance changes, accessible via the navbar bell icon.
 6.  **Invite Page**: A dedicated screen for the "Collaborative Ordering" feature to facilitate group meals.
 
@@ -191,20 +192,9 @@ To ensure the security of the campus ecosystem, this application does not allow 
     * **Wallet Actions**: Manually **Add Funds** for cash recharges or apply a **Penalty** (Reduce Funds).
 3.  **Order Management**: Centralized hub to manage the kitchen workflow by updating order statuses (e.g., mark as Cooking or Completed).
 
-## 📡 API Specification
-
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| **POST** | `/api/auth/login` | Authenticate user/admin. Returns JWT & Profile. |
-| **GET** | `/api/auth/me` | Fetch detailed profile, wallet balance, and notifications. |
-| **POST** | `/api/orders` | Place a new order. Requires `{ paymentMethod: 'wallet', items: [...] }`. |
-| **GET** | `/api/orders/my` | Fetch order history for logged-in user. |
-| **POST** | `/api/admin/users/:id/wallet` | Admin only. Add/Reduce wallet balance. |
-| **PUT** | `/api/auth/notifications/read` | Mark notifications as read. |
-
 ---
 
-## � Future Improvements (Roadmap)
+## 🚧 Future Improvements (Roadmap)
 
 To further enhance the Campus Canteen experience, the following features are planned:
 1.  **UPI Integration**: Fully implement real UPI payment gateway for balance recharge.
@@ -216,5 +206,5 @@ To further enhance the Campus Canteen experience, the following features are pla
 ---
 
 <div align="center">
-  <small>© 2026 Campus Canteen Project</small>
+  <small>© 2026 Campus Canteen Project. All rights reserved.</small>
 </div>

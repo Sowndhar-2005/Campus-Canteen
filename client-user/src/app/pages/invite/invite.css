@@ -1,0 +1,72 @@
+/* ===== Invite Page Styles ===== */
+
+.invite-container {
+  /* Subtracting 97px (70px navbar + 27px extra adjustment) to eliminate minor scrolling */
+  height: calc(100dvh - 97px);
+  overflow: hidden;
+  width: 100%;
+}
+
+/* --- Sidebar --- */
+.invite-sidebar {
+  width: 360px;
+  min-width: 360px;
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.sidebar-btn {
+  width: 32px;
+  height: 32px;
+}
+
+.initials-avatar {
+  width: 32px;
+  height: 32px;
+  font-size: 0.75rem;
+}
+
+.search-input {
+  height: 40px;
+}
+
+.sidebar-scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.sidebar-scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* --- Conversation Panel --- */
+.conversation-panel {
+  background-color: #efeae2;
+  height: 100%;
+}
+
+.dotted-bg {
+  position: absolute;
+  inset: 0;
+  opacity: 0.06;
+  pointer-events: none;
+  background-image: radial-gradient(#4a5568 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .invite-container {
+    height: auto;
+    min-height: calc(100dvh - 70px);
+  }
+
+  .invite-sidebar {
+    width: 100% !important;
+    min-width: 100% !important;
+    height: auto;
+  }
+
+  .conversation-panel {
+    display: none !important;
+  }
+}

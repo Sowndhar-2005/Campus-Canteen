@@ -21,14 +21,11 @@
         (ngModelChange)="onSearchChange($event)"
         class="form-control form-control-sm ps-4 pe-5 rounded-3 border-0 shadow-sm"
         placeholder="Search food..."
-        aria-label="Search for food items"
         style="height: 36px"
       />
       @if (searchQuery()) {
         <span
-          role="button"
           tabindex="0"
-          aria-label="Clear search"
           class="position-absolute top-50 end-0 translate-middle-y me-2 text-secondary"
           style="cursor: pointer"
           (click)="onSearchChange('')"
@@ -83,7 +80,7 @@
             <!-- Type Filter -->
             <div class="mb-3">
               <label class="small fw-bold text-muted mb-2 d-block">Type</label>
-              <div class="btn-group w-100" role="group">
+              <div class="btn-group w-100">
                 <input
                   type="radio"
                   class="btn-check"
@@ -119,7 +116,7 @@
             <!-- Sort Filter -->
             <div class="mb-3">
               <label class="small fw-bold text-muted mb-2 d-block">Price</label>
-              <div class="btn-group w-100" role="group">
+              <div class="btn-group w-100">
                 <input
                   type="radio"
                   class="btn-check"
@@ -368,8 +365,6 @@
               <div class="d-flex gap-2 mt-auto">
                 <button
                   (click)="addToCartItem(food, 1)"
-                  [disabled]="food.stockQuantity === 0"
-                  [attr.aria-label]="'Add ' + food.name + ' to cart'"
                   class="btn btn-outline-primary flex-grow-1 fw-bold rounded-3 py-2 shadow-sm d-flex align-items-center justify-content-center gap-1"
                 >
                   <i class="bi bi-cart-plus"></i>
